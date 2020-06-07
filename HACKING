@@ -6,3 +6,5 @@ $ poetry run black .
 $ poetry run flake8
 
 $ poetry run python -m caw.archive <path_to_an_expanded_twitter_archive>
+
+$ CAW_TEST_ARCHIVE_PATH=<path_to_an_expanded_twitter_archive> poetry run python -m pytest
