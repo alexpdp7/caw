@@ -1,4 +1,5 @@
 import dataclasses
+from typing import List, Any
 
 from caw.archive.int_range import IntRange, make_int_range
 from caw.archive.media import Medium, make_media
@@ -34,14 +35,14 @@ class Symbol:
 
 @dataclasses.dataclass
 class Entities:
-    hashtags: [Hashtag]
-    user_mentions: [UserMention]
-    urls: [Url]
-    media: [Medium]
-    symbols: [Symbol]
+    hashtags: List[Hashtag]
+    user_mentions: List[UserMention]
+    urls: List[Url]
+    media: List[Medium]
+    symbols: List[Symbol]
 
 
-def make_entities(entities_json):
+def make_entities(entities_json: Any) -> Entities:
     hashtags = _make_hashtags(entities_json.pop("hashtags", []))
     symbols = _make_symbols(entities_json.pop("symbols", []))
     user_mentions = _make_user_mentions(entities_json.pop("user_mentions", []))
@@ -59,11 +60,11 @@ def make_entities(entities_json):
     )
 
 
-def _make_symbols(symbols):
+def _make_symbols(symbols: List[Any]) -> List[Symbol]:
     return [_make_symbol(symbol) for symbol in symbols]
 
 
-def _make_symbol(symbol_json):
+def _make_symbol(symbol_json: Any) -> Symbol:
     text = symbol_json.pop("text")
     assert isinstance(text, str)
 
@@ -73,11 +74,11 @@ def _make_symbol(symbol_json):
     return Symbol(indices=indices, text=text)
 
 
-def _make_urls(urls):
+def _make_urls(urls: Any) -> List[Url]:
     return [_make_url(url) for url in urls]
 
 
-def _make_url(url_json):
+def _make_url(url_json: Any) -> Url:
     display_url = url_json.pop("display_url")
     assert isinstance(display_url, str)
 
@@ -95,14 +96,14 @@ def _make_url(url_json):
     )
 
 
-def _make_user_mentions(user_mentions_json):
+def _make_user_mentions(user_mentions_json: Any) -> List[UserMention]:
     return [
         _make_user_mention(user_mention_json)
         for user_mention_json in user_mentions_json
     ]
 
 
-def _make_user_mention(user_mention_json):
+def _make_user_mention(user_mention_json: Any) -> UserMention:
     name = user_mention_json.pop("name")
     assert isinstance(name, str)
 
@@ -120,11 +121,11 @@ def _make_user_mention(user_mention_json):
     return UserMention(name=name, screen_name=screen_name, indices=indices, id=id)
 
 
-def _make_hashtags(hashtags_json):
+def _make_hashtags(hashtags_json: Any) -> List[Hashtag]:
     return [_make_hashtag(hashtag_json) for hashtag_json in hashtags_json]
 
 
-def _make_hashtag(hashtag_json):
+def _make_hashtag(hashtag_json: Any) -> Hashtag:
     text = hashtag_json.pop("text")
     assert isinstance(text, str)
 

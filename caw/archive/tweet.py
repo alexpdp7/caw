@@ -1,5 +1,6 @@
 import dataclasses
 import datetime
+from typing import Any, Optional
 
 from caw.archive.dates import date_from_str
 from caw.archive.entities import Entities, make_entities
@@ -13,7 +14,7 @@ class Tweet:
     lang: str
     full_text: str
     favorited: bool
-    possibly_sensitive: bool
+    possibly_sensitive: Optional[bool]
     id: int
     retweet_count: int
     truncated: bool
@@ -22,12 +23,12 @@ class Tweet:
     created_at: datetime.datetime
     in_reply_to_status_id: int
     in_reply_to_user_id: int
-    in_reply_to_screen_name: str
+    in_reply_to_screen_name: Optional[str]
     entities: Entities
-    extended_entities: Entities
+    extended_entities: Optional[Entities]
 
 
-def make_tweet(json_tweet):
+def make_tweet(json_tweet: Any) -> Tweet:
     assert list(json_tweet.keys()) == ["tweet"]
     json_tweet = json_tweet["tweet"]
 

@@ -1,5 +1,6 @@
 import dataclasses
 import enum
+from typing import List, Any, Dict, Tuple
 
 from caw.archive.int_range import IntRange, make_int_range
 
@@ -21,7 +22,7 @@ class Medium:
     id: int
     indices: IntRange
     media_url_https: str
-    sizes: [Size]
+    sizes: Dict[str, Size]
     source_status_id: int
     source_user_id: int
     url: str
@@ -47,23 +48,23 @@ class AspectRatio:
 
 @dataclasses.dataclass
 class AnimatedGif(Medium):
-    variants: [Variant]
+    variants: List[Variant]
     aspect_ratio: AspectRatio
 
 
 @dataclasses.dataclass
 class Video(Medium):
-    variants: [Variant]
+    variants: List[Variant]
     aspect_ratio: AspectRatio
     duration_millis: int
     monetizable: bool
 
 
-def make_media(media):
+def make_media(media: List[Any]) -> List[Medium]:
     return [_make_medium(medium) for medium in media]
 
 
-def _make_medium(medium_json):
+def _make_medium(medium_json: Any) -> Medium:
     display_url = medium_json.pop("display_url")
     assert isinstance(display_url, str)
 
@@ -179,13 +180,13 @@ def _make_medium(medium_json):
     assert False, type
 
 
-def _make_sizes(sizes):
+def _make_sizes(sizes: Dict[str, Any]) -> Dict[str, Size]:
     return dict(
         [_make_size(size, content_json) for size, content_json in sizes.items()]
     )
 
 
-def _make_size(size, content_json):
+def _make_size(size: str, content_json: Any) -> Tuple[str, Size]:
     height = int(content_json.pop("h"))
     width = int(content_json.pop("w"))
 
@@ -195,15 +196,15 @@ def _make_size(size, content_json):
     return size, Size(height=height, width=width, resize=resize)
 
 
-def _make_aspect_ratio(aspect_ratio):
+def _make_aspect_ratio(aspect_ratio: List[str]) -> AspectRatio:
     return AspectRatio(int(aspect_ratio[0]), int(aspect_ratio[1]))
 
 
-def _make_variants(variants_json):
+def _make_variants(variants_json: Any) -> List[Variant]:
     return [_make_variant(variant_json) for variant_json in variants_json]
 
 
-def _make_variant(variant_json):
+def _make_variant(variant_json: Any) -> Variant:
     bitrate = variant_json.pop("bitrate", None)
     if bitrate:
         bitrate = int(bitrate)
