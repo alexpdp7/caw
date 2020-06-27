@@ -10,3 +10,6 @@ $ CAW_TEST_ARCHIVE_PATH=<path_to_an_expanded_twitter_archive> poetry run python 
 
 $ poetry install -e rss
 $ poetry run uvicorn caw.twint_rss:app
+
+# update requirements.txt for Heroku deployments
+$ poetry export -E rss -f requirements.txt --without-hashes -o requirements.txt

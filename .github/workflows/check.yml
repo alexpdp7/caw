@@ -20,6 +20,10 @@ jobs:
       run: |
         python -m pip install poetry
         poetry install -E rss
+    - name: Check requirements.txt is up to date
+      run: |
+        poetry export -E rss -f requirements.txt --without-hashes -o requirements.txt
+        git diff --exit-code requirements.txt
     - name: Lint with flake8
       run: |
         poetry run flake8
