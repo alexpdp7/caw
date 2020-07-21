@@ -925,7 +925,7 @@ rss = ["twint", "starlette", "uvicorn", "starlette-feedgen"]
 twint = ["twint"]
 
 [metadata]
-content-hash = "6e45ee40ecc1ee4e41586e22b283ecc487ed4913ab74109742244829e9922102"
+content-hash = "68ec58d399c1c5d506e58e8ae50fd1bf8734e66e4faea0974aaee4b491361820"
 python-versions = ">=3.6, <3.8"
 
 [metadata.files]
